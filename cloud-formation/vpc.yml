@@ -1,0 +1,30 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Using a cloud formation template to create VPC for the Microservice application
+
+
+Parameters:
+  vpcCIDR:
+    Description: IP range for the vpc
+    Type: "string"
+    Default: 10.0.0.0/16
+  
+  publicSubnet1CIDR:
+    Description: IP range for public subnet 1
+    Type: "string"
+    Default: 10.0.1.0/24
+
+  publicSubnet2CIDR:
+    Description: IP range for public subnet 2
+    Type: "string"
+    Default: 10.0.2.0/24
+
+  privateSubnet1CIDR:
+    Description: IP range for private subnet 1
+    Type: "string"
+    Default: 10.0.3.0/24
+
+  privateSubnet2CIDR:
+    Description: IP range for private subnet 2
+    Type: "string"
+    Default: 10.0.4.0/24
