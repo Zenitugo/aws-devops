@@ -23,7 +23,7 @@ Metadata:
           default: "Security Group Configuration"
         Parameters:
           - SSHLocation
-          
+
 Parameters:
 # Parameters to create VPC and Subnets
   vpcCIDR:
@@ -72,7 +72,7 @@ Resources:
       EnableDnsSupport: True
       InstanceTenancy: default
       Tags: 
-        - key: Name
+        - Key: Name
           Value: app-vpc
 
   InternetGateway:
