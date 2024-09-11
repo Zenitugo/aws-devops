@@ -250,3 +250,55 @@ Resources:
       Tags:
       - Key: Name
         Value: Instance-Security-Group
+
+
+Outputs:
+  StackVPC:
+    Description: The ID of the VPC
+    Export:
+      Name: !Sub "${AWS::StackName}-VPCID"
+    Value: !Ref VPC
+
+  Pub-Sub1:
+    Description: The ID of the public subent 1
+    Export:
+      Name: !Sub "${AWS::StackName}-pubsub1"
+    Value: !Ref PublicSub1
+
+  Pub-Sub2:
+    Description: The ID of the public subent 2
+    Export:
+      Name: !Sub "${AWS::StackName}-pubsub2"
+    Value: !Ref PublicSub2
+
+  Pri-Sub1:
+    Description: The ID of the private subent 1
+    Export:
+      Name: !Sub "${AWS::StackName}-prisub1"
+    Value: !Ref PrivateSub1
+
+  Pr1-Sub2:
+    Description: The ID of the public subent 2
+    Export:
+      Name: !Sub "${AWS::StackName}-prisub2"
+    Value: !Ref PrivateSub2
+
+  Alb-SG:
+    Description: The ID of alb security group
+    Export:
+      Name: !Sub "${AWS::StackName}-alb-sg"
+    Value: !Ref LoadBalancerSecurityGroup
+
+
+  SSH-SG:
+    Description: The ID of ssh security group
+    Export:
+      Name: !Sub "${AWS::StackName}-ssh-sg"
+    Value: !Ref SSHSecurityGroup
+
+
+  ec2-SG:
+    Description: The ID of app security group
+    Export:
+      Name: !Sub "${AWS::StackName}-ec2-sg"
+    Value: !Ref AppSecurityGroup
