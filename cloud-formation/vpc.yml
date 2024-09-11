@@ -133,5 +133,14 @@ Resources:
           Value: private-subnet-2
       VpcId:
         Ref: VPC
+
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: app-route-table
       
 
