@@ -134,13 +134,22 @@ Resources:
       VpcId:
         Ref: VPC
 
-  RouteTable:
+  PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId:  
         Ref: VPC
       Tags:
       - Key: Name
-        Value: app-route-table
+        Value: app-route-table1
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: app-route-table2
       
 
