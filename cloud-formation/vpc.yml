@@ -102,38 +102,6 @@ Resources:
         Ref: VPC
 
 
-  PrivateSub1:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone: !Select 
-        - 0
-        - !GetAZs
-          Ref: 'AWS::Region'
-      CidrBlock: 
-        Ref: privateSubnet1CIDR
-      MapPublicIpOnLaunch: false
-      Tags: 
-        - Key: Name
-          Value: private-subnet-1
-      VpcId:
-        Ref: VPC
-
-  PrivateSub2:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone: !Select 
-        - 1
-        - !GetAZs
-          Ref: 'AWS::Region'
-      CidrBlock: 
-        Ref: privateSubnet2CIDR
-      MapPublicIpOnLaunch: false
-      Tags: 
-        - Key: Name
-          Value: private-subnet-2
-      VpcId:
-        Ref: VPC
-
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -178,3 +146,35 @@ Resources:
         Ref: PublicSub2
       RouteTableId:
         Ref: PublicRouteTable
+
+  PrivateSub1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs
+          Ref: 'AWS::Region'
+      CidrBlock: 
+        Ref: privateSubnet1CIDR
+      MapPublicIpOnLaunch: false
+      Tags: 
+        - Key: Name
+          Value: private-subnet-1
+      VpcId:
+        Ref: VPC
+
+  PrivateSub2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs
+          Ref: 'AWS::Region'
+      CidrBlock: 
+        Ref: privateSubnet2CIDR
+      MapPublicIpOnLaunch: false
+      Tags: 
+        - Key: Name
+          Value: private-subnet-2
+      VpcId:
+        Ref: VPC
