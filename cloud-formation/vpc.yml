@@ -111,7 +111,7 @@ Resources:
           Ref: 'AWS::Region'
       CidrBlock: 
         Ref: privateSubnet1CIDR
-      MapPublicIpOnLaunch: true
+      MapPublicIpOnLaunch: false
       Tags: 
         - Key: Name
           Value: private-subnet-1
@@ -122,12 +122,12 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: !Select 
-        - 0
+        - 1
         - !GetAZs
           Ref: 'AWS::Region'
       CidrBlock: 
         Ref: privateSubnet2CIDR
-      MapPublicIpOnLaunch: true
+      MapPublicIpOnLaunch: false
       Tags: 
         - Key: Name
           Value: private-subnet-2
