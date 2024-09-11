@@ -2,12 +2,33 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Using a cloud formation template to create VPC for the Microservice application
 
-
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: "VPC Configuration"
+        Parameters:
+          - vpcCIDR
+      -
+        Label:
+          default: "Subnet Configuration"
+        Parameters:
+          - publicSubnet1CIDR
+          - publicSubnet2CIDR
+          - privateSubnet1CIDR
+          - privateSubnet2CIDR
+      -
+        Label:
+          default: "Security Group Configuration"
+        Parameters:
+          - SSHLocation
+          
 Parameters:
 # Parameters to create VPC and Subnets
   vpcCIDR:
     Description: IP range for the vpc
-    Type: "string"
+    Type: "String"
     Default: 10.0.0.0/16
   
   publicSubnet1CIDR:
@@ -123,7 +144,6 @@ Resources:
 
   PublicRoute:
     Type: AWS::EC2::Route
-    DependsOn: GatewayToInternet
     Properties:
        RouteTableId:
          Ref: PublicRouteTable
