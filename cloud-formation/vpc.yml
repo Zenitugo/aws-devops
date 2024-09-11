@@ -179,10 +179,10 @@ Resources:
       VpcId:
         Ref: VPC
 
-  SecurityGroup1:
+  LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Allow http to client host
+      GroupDescription: load balancer security group
       VpcId:
         Ref: VPC
       SecurityGroupIngress:
@@ -194,10 +194,10 @@ Resources:
       - Key: Name
         Value: app-sg1
 
-  SecurityGroup2:
+  SSHSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Allow http to client host
+      GroupDescription: ssh ecurity group
       VpcId:
         Ref: VPC
       SecurityGroupIngress:
@@ -210,3 +210,23 @@ Resources:
       - Key: Name
         Value: app-sg2
 
+  AppSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: security group to distribute traffic to different parts of the application
+      VpcId:
+        Ref: VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId:
+            Ref: LoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          SourceSecurityGroupId:
+            Ref: SSHSecurityGroup
+      Tags:
+      - Key: Name
+        Value: Instance-Security-Group
