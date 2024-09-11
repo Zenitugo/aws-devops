@@ -35,20 +35,103 @@ Parameters:
     Description: The IP address range that can SSH to the EC2 instance
     Type: String
     MinLength: '9'
-    MaxLength": '18'
-    Default": 0.0.0.0/0
+    MaxLength: '18'
+    Default: 0.0.0.0/0
     AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
     ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x.
   
 
-  Resources:
+Resources:
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: !Ref vpcCIDR
+      CidrBlock: 
+        Ref: vpcCIDR
       EnableDnsHostnames: True
       EnableDnsSupport: True
       InstanceTenancy: default
       Tags: 
         - key: Name
-          value: app-vpc
+          Value: app-vpc
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: app-igw
+
+  AttachInternetGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+       Ref: VPC
+      InternetGatewayId:
+       Ref: InternetGateway
+
+  PublicSub1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs
+          Ref: 'AWS::Region'
+      CidrBlock: 
+        Ref: publicSubnet1CIDR
+      MapPublicIpOnLaunch: true
+      Tags: 
+        - Key: Name
+          Value: public-subnet-1
+      VpcId:
+        Ref: VPC
+
+  PublicSub2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs
+          Ref: 'AWS::Region'
+      CidrBlock: 
+        Ref: publicSubnet2CIDR
+      MapPublicIpOnLaunch: true
+      Tags: 
+        - Key: Name
+          Value: public-subnet-2
+      VpcId:
+        Ref: VPC
+
+
+  PrivateSub1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs
+          Ref: 'AWS::Region'
+      CidrBlock: 
+        Ref: privateSubnet1CIDR
+      MapPublicIpOnLaunch: true
+      Tags: 
+        - Key: Name
+          Value: private-subnet-1
+      VpcId:
+        Ref: VPC
+
+  PrivateSub2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs
+          Ref: 'AWS::Region'
+      CidrBlock: 
+        Ref: privateSubnet2CIDR
+      MapPublicIpOnLaunch: true
+      Tags: 
+        - Key: Name
+          Value: private-subnet-2
+      VpcId:
+        Ref: VPC
+      
+
