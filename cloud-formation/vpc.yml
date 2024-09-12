@@ -268,45 +268,45 @@ Outputs:
       Name: !Sub "${AWS::StackName}-VPCID"
     Value: !Ref VPC
 
-  Pub-Sub1:
+  PubSub1:
     Description: The ID of the public subent 1
     Export:
       Name: !Sub "${AWS::StackName}-pubsub1"
     Value: !Ref PublicSub1
 
-  Pub-Sub2:
+  PubSub2:
     Description: The ID of the public subent 2
     Export:
       Name: !Sub "${AWS::StackName}-pubsub2"
     Value: !Ref PublicSub2
 
-  Pri-Sub1:
+  PriSub1:
     Description: The ID of the private subent 1
     Export:
       Name: !Sub "${AWS::StackName}-prisub1"
     Value: !Ref PrivateSub1
 
-  Pr1-Sub2:
+  Pr1Sub2:
     Description: The ID of the public subent 2
     Export:
       Name: !Sub "${AWS::StackName}-prisub2"
     Value: !Ref PrivateSub2
 
-  Alb-SG:
+  AlbSG:
     Description: The ID of alb security group
     Export:
       Name: !Sub "${AWS::StackName}-alb-sg"
     Value: !Ref LoadBalancerSecurityGroup
 
 
-  SSH-SG:
+  SSHSG:
     Description: The ID of ssh security group
     Export:
       Name: !Sub "${AWS::StackName}-ssh-sg"
     Value: !Ref SSHSecurityGroup
 
 
-  ec2-SG:
+  ec2SG:
     Description: The ID of app security group
     Export:
       Name: !Sub "${AWS::StackName}-ec2-sg"
