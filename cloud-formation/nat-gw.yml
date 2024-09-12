@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: This template creates a Nat gateway in each private subnet
-Parameter:
+Parameters:
   ExportVPC:
     Description: The name of the vpc stack
     Type: String
@@ -26,30 +26,49 @@ Resources:
 # Create NAT gateway
   PrivateSub1Natgateway:
     Type: AWS::EC2::NatGateway
-      Properties:
-        AllocationId: !GetAtt EIP1.AllocationId
-        SubnetId: 
-          fn::ImportValue: !Sub ${ExportVPC}-PublicSub1
-        Tags: 
-          - Key: Name
-            Value: PrivateSub1Natgateway
+    Properties:
+      AllocationId: !GetAtt EIP1.AllocationId
+      SubnetId: 
+        Fn::ImportValue: !Sub ${ExportVPC}-PubSub1
+      Tags: 
+        - Key: Name
+          Value: PrivateSub1Natgateway
 
   PrivateSub2Natgateway:
     Type: AWS::EC2::NatGateway
-      Properties:
-        AllocationId: !GetAtt EIP2.AllocationId
-        SubnetId: 
-          fn::ImportValue: !Sub ${ExportVPC}-PublicSub2
-        Tags: 
-          - Key: Name
-            Value: PrivateSub2Natgateway
+    Properties:
+      AllocationId: !GetAtt EIP2.AllocationId
+      SubnetId: 
+        Fn::ImportValue: !Sub ${ExportVPC}-PubSub2
+      Tags: 
+        - Key: Name
+          Value: PrivateSub2Natgateway
 
-#Private route table has bee configured in the vpc template
+# Create Private Route Table
+  PrivateRouteTable1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Fn::ImportValue: !Sub ${ExportVPC}-VPC
+      Tags:
+      - Key: Name
+        Value: pri-route-table1
+      
+  PrivateRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Fn::ImportValue: !Sub ${ExportVPC}-VPC
+      Tags:
+      - Key: Name
+        Value: pri-route-table2
+
+#Private route association
   PrivateRoute1:
     Type: AWS::EC2::Route
     Properties:
        RouteTableId:
-         fn::ImportValue: !Sub ${ExportVPC}-PrivateRouteTable
+         Ref: PrivateRouteTable1
        DestinationCidrBlock: 0.0.0.0/0
        GatewayId:
          Ref: PrivateSub1Natgateway
@@ -58,16 +77,16 @@ Resources:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId:
-        fn::ImportValue: !Sub ${ExportVPC}-PrivateSub1
+        Fn::ImportValue: !Sub ${ExportVPC}-PriSub1
       RouteTableId:
-        fn::ImportValue: !Sub ${ExportVPC}-PrivateRouteTable1
+        Ref: PrivateRouteTable1
 
 
   PrivateRoute2:
     Type: AWS::EC2::Route
     Properties:
        RouteTableId:
-         fn::ImportValue: !Sub ${ExportVPC}-PrivateRouteTable2
+         Ref: PrivateRouteTable2
        DestinationCidrBlock: 0.0.0.0/0
        GatewayId:
          Ref: PrivateSub2Natgateway
@@ -76,6 +95,6 @@ Resources:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId:
-        fn::ImportValue: !Sub ${ExportVPC}-PrivateSub2
+        Fn::ImportValue: !Sub ${ExportVPC}-PriSub2
       RouteTableId:
-        fn::ImportValue: !Sub ${ExportVPC}-PrivateRouteTable2
+        Ref: PrivateRouteTable2
