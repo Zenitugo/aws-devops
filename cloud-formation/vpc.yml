@@ -132,16 +132,6 @@ Resources:
       - Key: Name
         Value: app-route-table1
 
-  PrivateRouteTable:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId:  
-        Ref: VPC
-      Tags:
-      - Key: Name
-        Value: app-route-table2
-      
-
   PublicRoute:
     Type: AWS::EC2::Route
     Properties:
@@ -198,6 +188,25 @@ Resources:
           Value: private-subnet-2
       VpcId:
         Ref: VPC
+
+  PrivateRouteTable1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: pri-route-table1
+      
+  PrivateRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: pri-route-table2
+      
 
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
