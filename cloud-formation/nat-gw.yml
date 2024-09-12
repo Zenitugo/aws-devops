@@ -6,6 +6,7 @@ Parameter:
     Type: String
 
 Resources:
+# Create Elastic Ips
   EIP1:
     Type: AWS::EC2::EIP
     Properties:
@@ -20,8 +21,9 @@ Resources:
       Domain: VPC
       Tags:
         - Key: Name
-          Value: EIP2:
+          Value: EIP2
 
+# Create NAT gateway
   PrivateSub1Natgateway:
     Type: AWS::EC2::NatGateway
       Properties:
@@ -37,7 +39,43 @@ Resources:
       Properties:
         AllocationId: !GetAtt EIP2.AllocationId
         SubnetId: 
-          fn::ImportVale: !Sub ${ExportVPC}-PrivateSub2
+          fn::ImportValue: !Sub ${ExportVPC}-PrivateSub2
         Tags: 
           - Key: Name
             Value: PrivateSub2Natgateway
+
+#Private route table has bee configured in the vpc template
+  PrivateRoute1:
+    Type: AWS::EC2::Route
+    Properties:
+       RouteTableId:
+         fn::ImportValue: !Sub ${ExportVPC}-PrivateRouteTable
+       DestinationCidrBlock: 0.0.0.0/0
+       GatewayId:
+         Ref: PrivateSub1Natgateway
+
+  PrivateSubnet1RouteTableAssociation1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        fn::ImportValue: !Sub ${ExportVPC}-PrivateSub1
+      RouteTableId:
+        fn::ImportValue: !Sub ${ExportVPC}-PrivateRouteTable1
+
+
+  PrivateRoute2:
+    Type: AWS::EC2::Route
+    Properties:
+       RouteTableId:
+         fn::ImportValue: !Sub ${ExportVPC}-PrivateRouteTable2
+       DestinationCidrBlock: 0.0.0.0/0
+       GatewayId:
+         Ref: PrivateSub2Natgateway
+
+  PrivateSubnet1RouteTableAssociation2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        fn::ImportValue: !Sub ${ExportVPC}-PrivateSub2
+      RouteTableId:
+        fn::ImportValue: !Sub ${ExportVPC}-PrivateRouteTable2
