@@ -29,7 +29,7 @@ Resources:
       Properties:
         AllocationId: !GetAtt EIP1.AllocationId
         SubnetId: 
-          fn::ImportValue: !Sub ${ExportVPC}-PrivateSub1
+          fn::ImportValue: !Sub ${ExportVPC}-PublicSub1
         Tags: 
           - Key: Name
             Value: PrivateSub1Natgateway
@@ -39,7 +39,7 @@ Resources:
       Properties:
         AllocationId: !GetAtt EIP2.AllocationId
         SubnetId: 
-          fn::ImportValue: !Sub ${ExportVPC}-PrivateSub2
+          fn::ImportValue: !Sub ${ExportVPC}-PublicSub2
         Tags: 
           - Key: Name
             Value: PrivateSub2Natgateway
