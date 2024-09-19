@@ -40,18 +40,38 @@ HTTPlistener:
 
 
 # Create a target group
-Type: AWS::ElasticLoadBalancingV2::TargetGroup
-Properties:
-  HealthCheckIntervalSeconds: 10
-  HealthCheckPath: /
-  HealthCheckTimeoutSeconds: 5
-  HealthyThresholdCount: 2
-  IpAddressType: String
-  Matcher: 
-    HttpCode: 200,302
-  Name: microservice app
-  Port: 80
-  Protocol: HTTP
-  UnhealthyThresholdCount: 5
-  VpcId: 
-    Fn::ImportValue: !Sub ${ExportVPC}-VPCID
+TargetGroup:
+  Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  Properties:
+    HealthCheckIntervalSeconds: 10
+    HealthCheckPath: /
+    HealthCheckTimeoutSeconds: 5
+    HealthyThresholdCount: 2
+    IpAddressType: String
+    Matcher: 
+      HttpCode: 200,302
+    Name: microservice app
+    Port: 80
+    Protocol: HTTP
+    UnhealthyThresholdCount: 5
+    VpcId: 
+      Fn::ImportValue: !Sub ${ExportVPC}-VPCID
+
+Outputs:
+  ALBDNS:
+    Description: Loadbalancer DNS
+    Value: !GetAtt ApplicationLoadBalancer.DNSName
+    Export:
+      Name: !Sub ${AWS::StackName}-alb-dns
+  
+  ALBZONE:
+    Description: Loadbalancer zone ID
+    Value: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
+    Export:
+      Name: !Sub ${AWS::StackName}-alb-zone-id
+
+  TargetGroup:
+    Description: Target group ARN
+    Value: !Ref TargetGroup
+    Export:
+      Name: !Sub ${AWS::StackName}-tg-arn
