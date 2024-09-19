@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: This template creates a Load balancer
+Parameters:
+  ExportVPC:
+    Type: String
+    Description: The VPC ID for the application
+
+Resources:
+  # Create Application Load balancer
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: Qr-app-load-balancer
+      Scheme: internet-facing
+      SecurityGroups: 
+        - Fn::ImportValue: !Sub ${ExportVPC}-alb-sg
+      SubnetMappings: 
+        - SubnetMapping
+      Subnets: 
+        - Fn::ImportValue: !Sub ${ExportVPC}-pubsub1
+        - Fn::ImportValue: !Sub ${ExportVPC}-pubsub2
+                                                                                        
